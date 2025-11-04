@@ -4,7 +4,8 @@ app.use(cors({
   origin: ['https://loginsystem-700t.onrender.com'],
   methods: ['GET', 'POST'],
   credentials: true
-}));-
+}));
+
 
 const connectDB = require('./config/db');
 const path = require('path');
