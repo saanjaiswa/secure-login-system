@@ -1,10 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+app.use(cors({
+  origin: ['https://loginsystem-700t.onrender.com'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 const connectDB = require('./config/db');
 const path = require('path');
 
-// ✅ initialize app BEFORE using it
 const app = express();
 const PORT = process.env.PORT || 5000;
 
