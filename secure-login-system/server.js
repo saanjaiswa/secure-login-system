@@ -1,12 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-app.use(cors({
-  origin: ['https://loginsystem-700t.onrender.com'],
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-
-
+const cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
 
@@ -26,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
 
-// Fallback for SPA (Single Page Application)
+// Fallback for SPA
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
