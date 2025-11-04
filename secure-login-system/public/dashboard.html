@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | Secure Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, <span id="username"></span> 😎</h1>
+    <p>You are securely logged in.</p>
+    <button id="logoutBtn">Logout</button>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Tools & Games</title>
+  <style>
+    :root{
+      --bg:#020617; --card:#071426; --accent:#00ff99; --muted:#9fb7b0;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; background: linear-gradient(180deg,#020617 0%, #071426 100%);
+      color: #c6fff0; display:flex; flex-direction:column; align-items:center; padding:22px;
+    }
+
+    header{width:100%; max-width:1100px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#003b2f,#007a5a);display:flex;align-items:center;justify-content:center;font-weight:700;color:#001}
+    h1{font-size:18px;margin:0}
+    .user {text-align:right;font-size:14px;color:var(--muted)}
+    .btn {background:var(--accent);color:#001;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    main{width:100%; max-width:1100px; margin-top:20px; display:grid; grid-template-columns: 280px 1fr; gap:20px; align-items:start}
+
+    /* Sidebar */
+    .sidebar{background:var(--card);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.03)}
+    .menu{display:flex;flex-direction:column;gap:8px}
+    .menu button{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:10px;border-radius:8px;text-align:left;cursor:pointer}
+    .menu button.active{background:linear-gradient(90deg, rgba(0,255,153,0.08), rgba(0,255,153,0.02)); color:var(--accent); border-color: rgba(0,255,153,0.18)}
+
+    /* Content */
+    .content{background:var(--card);border-radius:10px;padding:16px;border:1px solid rgba(255,255,255,0.03); min-height:420px}
+    .section{display:none}
+    .section.active{display:block}
+
+    /* Small common */
+    .row{display:flex;gap:8px;align-items:center}
+    input, textarea {background:var(--glass); border:1px solid rgba(255,255,255,0.04); color: #dffaf0; padding:8px; border-radius:6px; outline:none; width:100%}
+    textarea{min-height:180px; resize:vertical}
+    .muted{color:var(--muted); font-size:13px}
+
+    /* Calculator */
+    .calc {max-width:360px}
+    .display{background:#001014;color:#bfffe8;padding:12px;border-radius:8px;font-size:20px;text-align:right;margin-bottom:10px;min-height:48px}
+
+    .keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .keys button{padding:14px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+
+    /* Tic Tac Toe */
+    .ttt-grid{display:grid;grid-template-columns:repeat(3,80px);gap:8px}
+    .cell{width:80px;height:80px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;font-size:30px;border-radius:8px;cursor:pointer}
+
+    /* RPS */
+    .rps .choices{display:flex;gap:8px}
+    .rps .choices button{padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer}
+
+    /* Notepad */
+    .notepad-toolbar{display:flex;gap:8px;margin-bottom:8px}
+    .small-muted{font-size:13px;color:var(--muted)}
+
+    footer{width:100%; max-width:1100px; margin-top:18px; text-align:center; color:var(--muted); font-size:13px}
+    @media (max-width:900px){
+      main{grid-template-columns:1fr; padding-bottom:60px}
+      .sidebar{order:2}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">SL</div>
+      <div>
+        <h1>Secure Login — Tools</h1>
+        <div class="muted">Mini toolbox: calculator, games, notepad</div>
+      </div>
+    </div>
+
+    <div class="user" id="userBlock">
+      <div id="userName">Loading...</div>
+      <div style="margin-top:6px"><button class="btn ghost" id="logoutBtn">Logout</button></div>
+    </div>
+  </header>
+
+  <main>
+    <aside class="sidebar">
+      <div class="muted" style="margin-bottom:8px">Apps</div>
+      <div class="menu">
+        <button data-target="calc" class="active">🧮 Calculator</button>
+        <button data-target="ttt">❎ Tic-Tac-Toe</button>
+        <button data-target="rps">✊ Rock-Paper-Scissors</button>
+        <button data-target="note">📝 Notepad</button>
+      </div>
+
+      <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
+
+      <div class="muted">Quick links</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn ghost" id="clearLocal">Clear Saved Notes</button>
+      </div>
+    </aside>
+
+    <section class="content">
+      <!-- Calculator -->
+      <div id="calc" class="section active">
+        <h2>Calculator</h2>
+        <div class="calc">
+          <div id="calcDisplay" class="display">0</div>
+          <div class="keys">
+            <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button><button data-op="/">÷</button>
+            <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button><button data-op="*">×</button>
+            <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button><button data-op="-">−</button>
+            <button data-key="0">0</button><button data-key=".">.</button><button id="calcClear">C</button><button data-op="+">+</button>
+            <button style="grid-column:span:4" id="calcEquals" style="width:100%">=</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tic Tac Toe -->
+      <div id="ttt" class="section">
+        <h2>Tic-Tac-Toe</h2>
+        <div class="muted">2-player on same screen</div>
+        <div style="height:12px"></div>
+        <div id="tttStatus" class="muted">Player X to move</div>
+        <div class="ttt-grid" id="tttGrid" style="margin-top:10px"></div>
+        <div style="margin-top:12px"><button id="tttReset" class="btn ghost">Reset</button></div>
+      </div>
+
+      <!-- Rock Paper Scissors -->
+      <div id="rps" class="section">
+        <h2>Rock-Paper-Scissors</h2>
+        <div class="muted">Beat the computer</div>
+        <div style="height:10px"></div>
+        <div class="rps">
+          <div class="choices">
+            <button data-move="rock">✊ Rock</button>
+            <button data-move="paper">✋ Paper</button>
+            <button data-move="scissors">✌️ Scissors</button>
+          </div>
+          <div style="height:12px"></div>
+          <div id="rpsResult" class="muted"></div>
+        </div>
+      </div>
+
+      <!-- Notepad -->
+      <div id="note" class="section">
+        <h2>Notepad</h2>
+        <div class="notepad-toolbar">
+          <input id="noteTitle" placeholder="Title (optional)" />
+          <button class="btn" id="saveNote">Save</button>
+          <button class="btn ghost" id="downloadNote">Download</button>
+        </div>
+        <textarea id="noteArea" placeholder="Type your notes here..."></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <div class="small-muted">Saved notes:</div>
+          <select id="savedList" style="flex:1"></select>
+          <button class="btn ghost" id="delNote">Delete</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Made for demo • Your mini tools — no external servers required besides auth</footer>
+
+  <script>
+    // --- AUTH & USER INFO ---
+    const token = localStorage.getItem('token');
+    async function getUserInfo(){
+      if (!token) {
+        location.href = '/index.html';
+        return;
+      }
+      try {
+        const res = await fetch('/api/auth/me', { headers: { 'x-auth-token': token }});
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('userName').innerText = data.name || data.email || 'User';
+        } else {
+          // token invalid — redirect
+          localStorage.removeItem('token');
+          location.href = '/index.html';
+        }
+      } catch (err) {
+        // cannot reach backend; still allow local apps, show guest
+        document.getElementById('userName').innerText = 'Guest (offline)';
+      }
+    }
+    getUserInfo();
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      location.href = '/index.html';
+    });
+
+    // --- Sidebar menu switch ---
+    document.querySelectorAll('.menu button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        const t = b.getAttribute('data-target');
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(t).classList.add('active');
+      });
+    });
+
+    // --- Calculator logic ---
+    const calcDisplay = document.getElementById('calcDisplay');
+    let calcExp = '';
+    function updateCalc() { calcDisplay.innerText = calcExp || '0'; }
+    document.querySelectorAll('.keys button[data-key]').forEach(btn => {
+      btn.addEventListener('click', e => { calcExp += btn.dataset.key; updateCalc(); });
+    });
+    document.querySelectorAll('.keys button[data-op]').forEach(btn => {
+      btn.addEventListener('click', e => { calcExp += btn.dataset.op; updateCalc(); });
+    });
+    document.getElementById('calcClear').addEventListener('click', () => { calcExp=''; updateCalc(); });
+    document.getElementById('calcEquals').addEventListener('click', () => {
+      try {
+        // safe eval: replace × and ÷ if present; (we used symbols but ops dataset use real ops)
+        const result = Function('"use strict";return (' + calcExp + ')')();
+        calcExp = String(result);
+        updateCalc();
+      } catch (err) { calcDisplay.innerText = 'Error'; calcExp=''; }
+    });
+
+    // keyboard support
+    window.addEventListener('keydown', (e) => {
+      if (document.querySelector('#calc').classList.contains('active')) {
+        if ((e.key >= '0' && e.key <= '9') || e.key === '.' ) { calcExp += e.key; updateCalc(); }
+        if (['+','-','*','/'].includes(e.key)) { calcExp += e.key; updateCalc(); }
+        if (e.key === 'Enter') { document.getElementById('calcEquals').click(); }
+        if (e.key === 'Backspace') { calcExp = calcExp.slice(0,-1); updateCalc(); }
+      }
+    });
+
+    // --- Tic Tac Toe ---
+    const tttGrid = document.getElementById('tttGrid');
+    const tttStatus = document.getElementById('tttStatus');
+    let tttState = Array(9).fill(null), tttTurn = 'X', tttOver=false;
+    function tttRender(){
+      tttGrid.innerHTML = '';
+      tttState.forEach((v,i)=>{
+        const cell = document.createElement('div'); cell.className='cell'; cell.dataset.i=i; cell.innerText = v||'';
+        cell.addEventListener('click', () => {
+          if (tttOver || tttState[i]) return;
+          tttState[i] = tttTurn; cell.innerText = tttTurn;
+          if (checkWin(tttTurn)) { tttOver=true; tttStatus.innerText = `Player ${tttTurn} wins!`; }
+          else if (!tttState.includes(null)) { tttOver=true; tttStatus.innerText = 'Draw!'; }
+          else { tttTurn = (tttTurn==='X'?'O':'X'); tttStatus.innerText = `Player ${tttTurn} to move`; }
+        });
+        tttGrid.appendChild(cell);
+      });
+    }
+    function checkWin(p){
+      const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return lines.some(line => line.every(i=>tttState[i]===p));
+    }
+    document.getElementById('tttReset').addEventListener('click', ()=>{ tttState=Array(9).fill(null); tttTurn='X'; tttOver=false; tttStatus.innerText='Player X to move'; tttRender(); });
+    tttRender();
+
+    // --- Rock Paper Scissors ---
+    const rpsResult = document.getElementById('rpsResult');
+    function rpsChoice(player){
+      const moves = ['rock','paper','scissors'];
+      const cpu = moves[Math.floor(Math.random()*3)];
+      let res='Draw';
+      if (player===cpu) res='Draw';
+      else if ((player==='rock'&&cpu==='scissors')||(player==='paper'&&cpu==='rock')||(player==='scissors'&&cpu==='paper')) res='You win!';
+      else res='You lose.';
+      rpsResult.innerHTML = `You: <b>${player}</b> — CPU: <b>${cpu}</b><br><span style="color:var(--accent)">${res}</span>`;
+    }
+    document.querySelectorAll('[data-move]').forEach(b=>b.addEventListener('click', ()=>rpsChoice(b.dataset.move)));
+
+    // --- Notepad ---
+    const noteArea = document.getElementById('noteArea');
+    const noteTitle = document.getElementById('noteTitle');
+    const saveNote = document.getElementById('saveNote');
+    const savedList = document.getElementById('savedList');
+    const delNote = document.getElementById('delNote');
+    const downloadNote = document.getElementById('downloadNote');
+
+    function loadSavedList(){
+      savedList.innerHTML = '';
+      const keys = Object.keys(localStorage).filter(k=>k.startsWith('note:'));
+      if (keys.length===0) { const opt = document.createElement('option'); opt.text = 'No saved notes'; savedList.add(opt); return; }
+      keys.reverse().forEach(k=>{
+        const title = k.slice(5);
+        const opt = document.createElement('option'); opt.value=k; opt.text = title;
+        savedList.add(opt);
+      });
+    }
+    function saveCurrentNote(){
+      const title = (noteTitle.value || ('Note ' + new Date().toLocaleString())).trim();
+      const key = 'note:' + title;
+      const payload = { title, text: noteArea.value, ts: Date.now() };
+      localStorage.setItem(key, JSON.stringify(payload));
+      loadSavedList();
+      alert('Saved note: ' + title);
+    }
+    saveNote.addEventListener('click', saveCurrentNote);
+
+    savedList.addEventListener('change', () => {
+      const key = savedList.value;
+      if (!key || !localStorage.getItem(key)) return;
+      const obj = JSON.parse(localStorage.getItem(key));
+      noteTitle.value = obj.title;
+      noteArea.value = obj.text;
+    });
+
+    delNote.addEventListener('click', () => {
+      const key = savedList.value;
+      if (!key || !localStorage.getItem(key)) return alert('Select a saved note to delete.');
+      if (!confirm('Delete this saved note?')) return;
+      localStorage.removeItem(key);
+      loadSavedList();
+      noteTitle.value=''; noteArea.value='';
+    });
+
+    downloadNote.addEventListener('click', () => {
+      const text = noteArea.value || '';
+      const title = (noteTitle.value || 'note').replace(/[^a-z0-9_\- ]/ig,'').trim() || 'note';
+      const blob = new Blob([text], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = title + '.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('clearLocal').addEventListener('click', () => {
+      if (!confirm('Clear only saved notes? This will remove keys prefixed with "note:".')) return;
+      Object.keys(localStorage).filter(k=>k.startsWith('note:')).forEach(k=>localStorage.removeItem(k));
+      loadSavedList();
+      alert('Saved notes cleared.');
+    });
+
+    // init notepad list
+    loadSavedList();
+
+  </script>
+</body>
+</html>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
